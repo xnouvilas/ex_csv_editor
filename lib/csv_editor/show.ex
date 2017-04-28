@@ -33,7 +33,6 @@ defmodule CsvEditor.Show do
   import Phoenix.HTML.Tag
 
   def data(options, file) when is_bitstring(file) do
-    IO.inspect file
     {header, body} = CsvEditor.decode(file)
 
     data(options, body, header)
