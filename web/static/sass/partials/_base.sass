@@ -1,0 +1,48 @@
+
+$default-border: 1px solid #999
+
+@mixin reset
+  border-radius: 0
+  > thead,
+  > tbody
+    > tr
+      font-size: inherit
+      padding: 0
+
+@mixin border
+
+  border: $default-border
+
+@mixin border-type($type)
+
+  border-#{$type}: $default-border
+
+@mixin background
+
+  background-color: #fff
+
+
+.csv-editor
+  @include border
+  @include reset
+  > thead,
+  > tbody
+    @include background
+    > tr:nth-child(even),
+    > tr:nth-child(odd)
+      @include background
+      > td,
+      > th
+        @include border-type(left)
+        padding: 0.125rem 0.25rem
+        &:first-child
+          border-left: 0
+  > thead
+    @include border-type(bottom)
+    > tr
+      color: rgba(0, 0, 0, 0.6)
+      line-height: 1.5rem
+  > tbody
+    > tr
+      @include border-type(bottom)
+      color: rgba(0, 0, 0, 0.85)

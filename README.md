@@ -26,6 +26,29 @@ Add to `mix.exs`
   end
 ```
 
+Configure Brunch `brunch-config.js`
+
+```javascript
+  # add csv_editor assets path to includePaths sass configuration
+  exports.config = {
+    plugins: {
+      sass: {
+        options: {
+          includePaths: [
+            'deps/csv_editor/web/static/sass'
+          ]
+        }
+      }
+    }
+  };
+```
+
+Import default styles whatever you want
+
+```sass
+  @import "csv-editor"
+```
+
 ## Example Usage
 
 Use in your template.
