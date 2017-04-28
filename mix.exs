@@ -50,7 +50,7 @@ defmodule CsvEditor.Mixfile do
     [
       # These are the default files included in the package
       name: :ex_csv_editor,
-      files: ["lib", "config", "mix.exs", "README*", "LICENSE"],
+      files: ["lib", "config", "mix.exs", "README*", "LICENSE", "web"],
       maintainers: ["Xavier Nouvilas"],
       licenses: ["MIT"],
       links: %{
