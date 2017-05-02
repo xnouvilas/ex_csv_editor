@@ -1,5 +1,5 @@
 
-$default-border: 1px solid #999
+$default-border: 1px solid $default-border-color
 
 @mixin reset
   border-radius: 0
@@ -19,7 +19,7 @@ $default-border: 1px solid #999
 
 @mixin background
 
-  background-color: #fff
+  background-color: $white
 
 
 .csv-editor
@@ -37,12 +37,19 @@ $default-border: 1px solid #999
         padding: 0.125rem 0.25rem
         &:first-child
           border-left: 0
+      > th
+        background-color: $table-head-background
+        color: rgba(0, 0, 0, 0.6)
+        font-weight: normal
+        text-align: center
   > thead
     @include border-type(bottom)
-    > tr
-      color: rgba(0, 0, 0, 0.6)
+    > tr:nth-child(even),
+    > tr:nth-child(odd)
       line-height: 1.5rem
   > tbody
-    > tr
+    > tr:nth-child(even),
+    > tr:nth-child(odd)
       @include border-type(bottom)
-      color: rgba(0, 0, 0, 0.85)
+      > td
+        color: rgba(0, 0, 0, 0.85)
