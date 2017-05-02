@@ -13,21 +13,24 @@ defmodule CsvEditor.Show do
         [60, "table", [[32, "class", 61, 34, "csv-editor", 34]], 62,
           [[60, "thead", [], 62,
             [60, "tr", [], 62,
-              [[60, "th", [], 62, "head 1", 60, 47, "th", 62],
+              [[60, "th", [], 62, "", 60, 47, "th", 62],
+                [[60, "th", [], 62, "head 1", 60, 47, "th", 62],
                 [60, "th", [], 62, "head 2", 60, 47, "th", 62],
-                [60, "th", [], 62, "head 3", 60, 47, "th", 62]], 60, 47, "tr", 62], 60,
-            47, "thead", 62],
+                [60, "th", [], 62, "head 3", 60, 47, "th", 62]]], 60, 47,
+            "tr", 62], 60, 47, "thead", 62],
           [60, "tbody", [], 62,
             [[60, "tr", [], 62,
-              [[60, "td", [], 62, "cell 1", 60, 47, "td", 62],
-                [60, "td", [], 62, "cell 2", 60, 47, "td", 62],
-                [60, "td", [], 62, "cell 3", 60, 47, "td", 62]], 60, 47, "tr", 62],
-              [60, "tr", [], 62,
+              [[60, "th", [], 62, "1", 60, 47, "th", 62],
+                [[60, "td", [], 62, "cell 1", 60, 47, "td", 62],
+                  [60, "td", [], 62, "cell 2", 60, 47, "td", 62],
+                  [60, "td", [], 62, "cell 3", 60, 47, "td", 62]]], 60, 47,
+             "tr", 62],
+            [60, "tr", [], 62,
+              [[60, "th", [], 62, "2", 60, 47, "th", 62],
                 [[60, "td", [], 62, "cell 4", 60, 47, "td", 62],
-                [60, "td", [], 62, "cell 5", 60, 47, "td", 62],
-                [60, "td", [], 62, "cell 6", 60, 47, "td", 62]], 60, 47, "tr", 62]], 60,
-            47, "tbody", 62]], 60, 47, "table", 62]}
-
+                  [60, "td", [], 62, "cell 5", 60, 47, "td", 62],
+                  [60, "td", [], 62, "cell 6", 60, 47, "td", 62]]], 60, 47,
+            "tr", 62]], 60, 47, "tbody", 62]], 60, 47, "table", 62]}
   """
 
   import Phoenix.HTML.Tag
@@ -46,7 +49,7 @@ defmodule CsvEditor.Show do
   end
 
   defp header(header) do
-    content_tag(:thead, content_tag(:tr, row(header, :th)))
+    content_tag(:thead, content_tag(:tr, [cell("", :th), Enum.map(header, fn(e) -> cell(e, :th) end)]))
   end
 
   defp body(body) do
@@ -54,12 +57,12 @@ defmodule CsvEditor.Show do
   end
 
   defp row(contents, tag) do
-    Enum.map(contents, fn(c) -> row(contents, c, tag) end)
+    Enum.with_index(contents) |> Enum.map(fn{c, index} -> row(c, tag, index) end)
   end
-  defp row(contents, c, tag) when is_list(c) do
-    content_tag(:tr, Enum.map(c, fn(e) -> row(contents, e, tag) end))
+  defp row(c, tag, index) when is_list(c) do
+    content_tag(:tr, [cell(index + 1, :th), Enum.map(c, fn(e) -> cell(e, tag) end)])
   end
-  defp row(contents, c, tag) do
+  defp row(c, tag, _index) do
     cell(c, tag)
   end
 
