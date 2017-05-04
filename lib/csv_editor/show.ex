@@ -9,7 +9,7 @@ defmodule CsvEditor.Show do
   ## Examples
 
       iex> CsvEditor.Show.data({["head 1", "head 2", "head 3"], [["cell 1", "cell 2", "cell 3"], ["cell 4", "cell 5", "cell 6"]]})
-      {:safe,
+      [{:safe,
         [60, "table", [[32, "class", 61, 34, "csv-editor", 34]], 62,
           [[60, "thead", [], 62,
             [60, "tr", [], 62,
@@ -30,7 +30,7 @@ defmodule CsvEditor.Show do
                 [[60, "td", [], 62, "cell 4", 60, 47, "td", 62],
                   [60, "td", [], 62, "cell 5", 60, 47, "td", 62],
                   [60, "td", [], 62, "cell 6", 60, 47, "td", 62]]], 60, 47,
-            "tr", 62]], 60, 47, "tbody", 62]], 60, 47, "table", 62]}
+            "tr", 62]], 60, 47, "tbody", 62]], 60, 47, "table", 62]}, []]
   """
 
   import Phoenix.HTML.Tag
@@ -48,14 +48,17 @@ defmodule CsvEditor.Show do
   def data({header, body}, page) do
     pages = Scrivener.paginate(body, scrivener_config(page))
 
-    table = content_tag(:table, content({pages.entries, header}, page), [class: "csv-editor"])
+    table = content_tag(:table, content({header, pages.entries}, page), [class: "csv-editor"])
 
-    pager = pagination_links(pages, view_style: :foundation)
+    pager = case pages.total_pages do
+      1 -> []
+      _ -> pagination_links(pages, view_style: :foundation)
+    end
 
     [table, pager]
   end
 
-  defp content({body, header}, page), do: [header(header), body(body, page)]
+  defp content({header, body}, page), do: [header(header), body(body, page)]
 
   defp header(header), do:
     content_tag(:thead, content_tag(:tr, [cell("", :th), Enum.map(header, fn(e) -> cell(e, :th) end)]))
