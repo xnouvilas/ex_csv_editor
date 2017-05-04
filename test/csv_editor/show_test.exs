@@ -9,6 +9,14 @@ defmodule CsvEditor.ShowTest do
     }
   end
 
+  test "spawn CSV data without header and body", params do
+
+    expected = [[], []]
+
+    assert expected == CsvEditor.Show.data({[]})
+
+  end
+
   test "spawn CSV data with header", params do
 
     expected = [{:safe,

@@ -48,15 +48,18 @@ defmodule CsvEditor.Show do
   def data({header, body}, page) do
     pages = Scrivener.paginate(body, scrivener_config(page))
 
-    table = content_tag(:table, content({header, pages.entries}, page), [class: "csv-editor"])
-
-    pager = case pages.total_pages do
-      1 -> []
-      _ -> pagination_links(pages, next: nil, previous: nil, first: true, last: true, view_style: :foundation)
-    end
-
-    [table, pager]
+    [table({header, pages.entries}, page), pager(pages, pages.total_pages)]
   end
+
+  defp table({header, []}, page), do: []
+  defp table({header, entries}, page), do:
+    content_tag(:table, content({header, entries}, page), [class: "csv-editor"])
+
+  defp pager(pages), do:
+    pagination_links(pages, next: nil, previous: nil, first: true, last: true, view_style: :foundation)
+  defp pager(pages, 0), do: []
+  defp pager(pages, 1), do: []
+  defp pager(pages, _), do: pager(pages)
 
   defp content({[], []}, page), do: []
   defp content({[], body}, page), do: [body(body, page)]
