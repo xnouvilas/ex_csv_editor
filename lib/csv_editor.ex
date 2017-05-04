@@ -7,12 +7,12 @@ defmodule CsvEditor do
   def decode(file_path, separator) do
     header = decode_header(file_path, separator)
 
-    {header, decode_stream(file_path, separator) |> Stream.drop(1)}
+    {header, decode_stream(file_path, separator) |> Stream.drop(1) |> Enum.to_list}
   end
 
   def decode_header(file_path, separator \\ ?;), do: decode_stream(file_path, separator) |> Enum.take(1) |> List.first
 
-  def decode_stream(file_path, separator \\ ?;), do: File.stream!(file_path) |> CSV.decode(separator: separator)
+  def decode_stream(file_path, separator \\ ?;), do: File.stream!(file_path) |> CSV.decode(separator: separator) |> Enum.to_list
 
   def define_separator(file_path) do
     semicolon_count = File.stream!(file_path)
