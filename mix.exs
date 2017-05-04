@@ -4,7 +4,7 @@ defmodule CsvEditor.Mixfile do
   def project do
     [
       app: :csv_editor,
-      version: "0.1.3",
+      version: "0.2.0",
       elixir: "~> 1.4",
       build_embedded: Mix.env == :prod,
       start_permanent: Mix.env == :prod,
@@ -37,6 +37,8 @@ defmodule CsvEditor.Mixfile do
       {:ex_doc, "~> 0.15", only: :dev},
       {:phoenix, "~> 1.2.0"},
       {:phoenix_html, "~> 2.6"},
+      {:scrivener_list, "~> 1.0"},          # A pagination library for the Elixir ecosystem
+      {:scrivener_html, "~> 1.6", git: "https://github.com/xnouvilas/scrivener_html.git", branch: :develop},
     ]
   end
 

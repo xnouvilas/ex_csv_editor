@@ -11,7 +11,7 @@ Add to `mix.exs`
   defp deps do
     [
       # ...
-      {:csv_editor, "~> 0.1"}
+      {:csv_editor, "~> 0.2"}
       # ...
     ]
   end
@@ -51,10 +51,33 @@ Import default styles whatever you want
 
 ## Example Usage
 
-Use in your template.
+Use in your template (HAML).
 
 ```elixir
-<%= CsvEditor.Show.data([], [["cell 1", "cell 2", "cell 3"], ["cell 4", "cell 5", "cell 6"]], ["col 1", "col 2", "col 3"]) %>
+# Show with custom data
+- header = ["col 1", "col 2", "col 3"]
+- body = [["cell 1", "cell 2", "cell 3"], ["cell 4", "cell 5", "cell 6"]]
+= CsvEditor.Show.data({header, body})
 
-<%= CsvEditor.Show.data([], "test/assets/scrape-test-data.csv") %>
+# Show without header and custom data
+- body = [["cell 1", "cell 2", "cell 3"], ["cell 4", "cell 5", "cell 6"]]
+= CsvEditor.Show.data({body})
+
+# Show CSV file
+= CsvEditor.Show.data("test/assets/scrape-test-data.csv")
+
+# Show CSV file with scrivener pager
+= CsvEditor.Show.data("test/assets/scrape-test-data.csv", @page)
 ```
+
+## We've done
+
+* Data Viewer without header
+* Data Viewer with header
+* Pagination through [Scrivener](https://github.com/drewolson/scrivener)
+
+## TODO
+
+* Tools to edit
+* Export button (CSV)
+* Export button (OTP / XLSX)
