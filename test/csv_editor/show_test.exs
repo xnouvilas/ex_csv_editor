@@ -73,6 +73,30 @@ defmodule CsvEditor.ShowTest do
 
   end
 
+  test "spawn CSV data without page", params do
+
+    expected = [{:safe,
+      [60, "table", [[32, "class", 61, 34, "csv-editor", 34]], 62,
+        [[60, "tbody", [], 62,
+          [[60, "tr", [], 62,
+            [[60, "th", [], 62, "1", 60, 47, "th", 62],
+            [[60, "td", [], 62, "cell 1", 60, 47, "td", 62],
+            [60, "td", [], 62, "cell 2", 60, 47, "td", 62],
+            [60, "td", [], 62, "cell 3", 60, 47, "td", 62]]
+          ], 60, 47, "tr", 62],
+          [60, "tr", [], 62,
+            [[60, "th", [], 62, "2", 60, 47, "th", 62],
+            [[60, "td", [], 62, "cell 4", 60, 47, "td", 62],
+            [60, "td", [], 62, "cell 5", 60, 47, "td", 62],
+            [60, "td", [], 62, "cell 6", 60, 47, "td", 62]]
+          ], 60, 47, "tr", 62]
+        ], 60, 47, "tbody", 62]
+      ], 60, 47, "table", 62]}, []]
+
+    assert expected == CsvEditor.Show.data({params[:data]}, nil)
+
+  end
+
   test "spawn CSV file with header", params do
 
     expected = [{:safe,

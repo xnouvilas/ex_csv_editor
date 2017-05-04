@@ -39,12 +39,15 @@ defmodule CsvEditor.Show do
   def data(file) when is_bitstring(file), do: data(file, 1)
   def data({body}), do: data({[], body}, 1)
   def data({header, body}), do: data({header, body}, 1)
+  def data({header, body}, nil), do: data({header, body}, 1)
   def data(file, page) when is_bitstring(file) do
     decoder = CsvEditor.decode(file)
 
     data(decoder, page)
   end
+  def data({body}, nil), do: data({[], body}, 1)
   def data({body}, page), do: data({[], body}, page)
+  def data({header, body}, nil), do: data({header, body}, 1)
   def data({header, body}, page) do
     pages = Scrivener.paginate(body, scrivener_config(page))
 
