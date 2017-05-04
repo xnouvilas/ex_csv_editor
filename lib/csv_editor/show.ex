@@ -52,7 +52,7 @@ defmodule CsvEditor.Show do
 
     pager = case pages.total_pages do
       1 -> []
-      _ -> pagination_links(pages, view_style: :foundation)
+      _ -> pagination_links(pages, next: nil, previous: nil, first: true, last: true, view_style: :foundation)
     end
 
     [table, pager]
