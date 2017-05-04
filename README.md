@@ -69,3 +69,15 @@ Use in your template (HAML).
 # Show CSV file with scrivener pager
 = CsvEditor.Show.data("test/assets/scrape-test-data.csv", @page)
 ```
+
+## We've done
+
+* Data Viewer without header
+* Data Viewer with header
+* Pagination through [Scrivener](https://github.com/drewolson/scrivener)
+
+## TODO
+
+* Tools to edit
+* Export button (CSV)
+* Export button (OTP / XLSX)
