@@ -58,6 +58,9 @@ defmodule CsvEditor.Show do
     [table, pager]
   end
 
+  defp content({[], []}, page), do: []
+  defp content({[], body}, page), do: [body(body, page)]
+  defp content({header, []}, page), do: [header(header)]
   defp content({header, body}, page), do: [header(header), body(body, page)]
 
   defp header(header), do:
