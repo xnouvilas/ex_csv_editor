@@ -38,7 +38,7 @@ defmodule CsvEditor.Mixfile do
       {:phoenix, "~> 1.2.0"},
       {:phoenix_html, "~> 2.6"},
       {:scrivener_list, "~> 1.0"},          # A pagination library for the Elixir ecosystem
-      {:scrivener_html, "~> 1.6", git: "https://github.com/xnouvilas/scrivener_html.git", branch: :develop},
+      {:scrivener_html, "~> 1.7", git: "https://github.com/xnouvilas/scrivener_html.git", branch: :develop},
     ]
   end
 

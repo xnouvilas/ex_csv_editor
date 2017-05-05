@@ -136,13 +136,12 @@ defmodule CsvEditor.ShowTest do
 
   test "spawn CSV file with pager", params do
 
-    expected = [60, "ul", [[32, "class", 61, 34, "pagination", 34], [32, "role", 61, 34, "pagination", 34]], 62,
-      [
-        [60, "li", [[32, "class", 61, 34, "current", 34]], 62,
-          [60, "a", [[32, "class", 61, 34, "", 34], [32, "href", 61, 34, "?page=1", 34], [32, "rel", 61, 34, "canonical", 34]], 62, "1", 60, 47, "a", 62], 60, 47, "li", 62],
-        [60, "li", [[32, "class", 61, 34, "", 34]], 62,
-          [60, "a", [[32, "class", 61, 34, "", 34], [32, "href", 61, 34, "?page=2", 34], [32, "rel", 61, 34, "next", 34]], 62, "2", 60, 47, "a", 62], 60, 47, "li", 62]
-      ], 60, 47, "ul", 62]
+    expected = [60, "ul", [[32, "class", 61, 34, "pagination", 34], [32, "role", 61, 34, "pagination", 34]], 62, [
+      [60, "li", [[32, "class", 61, 34, "current", 34]], 62,
+        [60, "span", [[32, "class", 61, 34, "", 34]], 62, "1", 60, 47, "span", 62], 60, 47, "li", 62],
+      [60, "li", [[32, "class", 61, 34, "", 34]], 62,
+        [60, "a", [[32, "class", 61, 34, "", 34], [32, "href", 61, 34, "?page=2", 34]], 62, "2", 60, 47, "a", 62], 60, 47, "li", 62]
+    ], 60, 47, "ul", 62]
 
     [safe: _, safe: pager] = CsvEditor.Show.data("test/assets/example-pager.csv")
 
