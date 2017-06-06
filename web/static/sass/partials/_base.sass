@@ -26,6 +26,7 @@ $default-border: 1px solid $default-border-color
 .csv-editor
   @include border
   @include reset
+  border-spacing: 0
   > thead,
   > tbody
     @include background
@@ -34,6 +35,7 @@ $default-border: 1px solid $default-border-color
       @include background
       > td,
       > th
+        @include border-type(bottom)
         @include border-type(left)
         padding: 0.125rem 0.25rem
         &:first-child
@@ -51,6 +53,5 @@ $default-border: 1px solid $default-border-color
   > tbody
     > tr:nth-child(even),
     > tr:nth-child(odd)
-      @include border-type(bottom)
       > td
         color: rgba(0, 0, 0, 0.85)
