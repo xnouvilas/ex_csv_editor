@@ -9,7 +9,7 @@ defmodule CsvEditor.ShowTest do
     }
   end
 
-  test "spawn CSV data without header and body", params do
+  test "spawn CSV data without header and body" do
 
     expected = [[], []]
 
@@ -97,7 +97,7 @@ defmodule CsvEditor.ShowTest do
 
   end
 
-  test "spawn CSV file with header", params do
+  test "spawn CSV file with header" do
 
     expected = [{:safe,
       [60, "table", [[32, "class", 61, 34, "csv-editor", 34]], 62,
@@ -134,7 +134,7 @@ defmodule CsvEditor.ShowTest do
 
   end
 
-  test "spawn CSV file with pager", params do
+  test "spawn CSV file with pager" do
 
     expected = [60, "ul", [[32, "class", 61, 34, "pagination", 34], [32, "role", 61, 34, "pagination", 34]], 62, [
       [60, "li", [[32, "class", 61, 34, "current", 34]], 62,
