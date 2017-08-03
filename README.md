@@ -1,4 +1,4 @@
-# CSV Editor for Elixir (Phoenix)
+# CSV Editor for Elixir (Phoenix 1.3.0)
 
 Helpers built to work with [Phoenix](http://www.phoenixframework.org)'s page struct to easily work with CSV files.
 
@@ -11,7 +11,7 @@ Add to `mix.exs`
   defp deps do
     [
       # ...
-      {:csv_editor, "~> 0.2"}
+      {:csv_editor, "~> 0.3"}
       # ...
     ]
   end

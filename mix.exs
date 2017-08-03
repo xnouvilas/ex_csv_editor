@@ -35,7 +35,7 @@ defmodule CsvEditor.Mixfile do
     [
       {:csv, "~> 1.4.2"},                   # Ultra-fast csv code/decode
       {:ex_doc, "~> 0.15", only: :dev},
-      {:phoenix, "~> 1.2.0"},
+      {:phoenix, "~> 1.3.0"},
       {:phoenix_html, "~> 2.6"},
       {:scrivener_list, "~> 1.0"},          # A pagination library for the Elixir ecosystem
       {:scrivener_html, "~> 1.7", git: "https://github.com/xnouvilas/scrivener_html.git", branch: :develop},
