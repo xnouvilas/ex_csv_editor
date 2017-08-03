@@ -36,60 +36,107 @@ defmodule CsvEditor.Show do
   import Phoenix.HTML.Tag
   import Scrivener.HTML
 
-  def data(file) when is_bitstring(file), do: data(file, 1)
-  def data({body}), do: data({[], body}, 1)
-  def data({header, body}), do: data({header, body}, 1)
-  def data({header, body}, nil), do: data({header, body}, 1)
-  def data(file, page) when is_bitstring(file) do
-    decoder = CsvEditor.decode(file)
+  def data(file) when is_bitstring(file),
+    do: data(file, 1)
 
-    data(decoder, page)
-  end
-  def data({body}, nil), do: data({[], body}, 1)
-  def data({body}, page), do: data({[], body}, page)
-  def data({header, body}, nil), do: data({header, body}, 1)
-  def data({header, body}, page) do
-    pages = Scrivener.paginate(body, scrivener_config(page))
+  def data({body}),
+    do: data({[], body}, 1)
 
-    [table({header, pages.entries}, page), pager(pages, pages.total_pages)]
-  end
+  def data({header, body}),
+    do: data({header, body}, 1)
 
-  defp table({header, []}, page), do: []
-  defp table({header, entries}, page), do:
-    content_tag(:table, content({header, entries}, page), [class: "csv-editor"])
+  def data({header, body}, nil),
+    do: data({header, body}, 1)
 
-  defp pager(pages), do:
-    pagination_links(pages, next: nil, previous: nil, first: true, last: true, view_style: :foundation)
-  defp pager(pages, 0), do: []
-  defp pager(pages, 1), do: []
-  defp pager(pages, _), do: pager(pages)
+  def data(file, page) when is_bitstring(file),
+    do: CsvEditor.decode(file) |> data(page)
 
-  defp content({[], []}, page), do: []
-  defp content({[], body}, page), do: [body(body, page)]
-  defp content({header, []}, page), do: [header(header)]
-  defp content({header, body}, page), do: [header(header), body(body, page)]
+  def data({body}, nil),
+    do: data({[], body}, 1)
 
-  defp header(header), do:
-    content_tag(:thead, content_tag(:tr, [cell("", :th), Enum.map(header, fn(e) -> cell(e, :th) end)]))
+  def data({body}, page),
+    do: data({[], body}, page)
 
-  defp body(body, page), do: content_tag(:tbody, row(body, :td, page))
+  def data({header, body}, nil),
+    do: data({header, body}, 1)
 
-  defp row(contents, tag, page) do
-    Enum.with_index(contents)
-    |> Enum.map(fn{c, index} -> row(c, tag, index, page) end)
-  end
-  defp row(c, tag, index, page) when is_list(c) do
-    content_tag(:tr, [cell(row_index(page, index), :th), Enum.map(c, fn(e) -> cell(e, tag) end)])
-  end
-  defp row(c, tag, _index, _page), do: cell(c, tag)
+  def data({header, body}, page),
+    do: data({header, body}, page, Scrivener.paginate(body, scrivener_config(page)))
 
-  defp cell(c, tag), do: content_tag(tag, c)
+  def data({header, _body}, page, pages),
+    do: [table({header, pages.entries}, page), pager(pages, pages.total_pages)]
 
-  defp scrivener_config(page) when is_bitstring(page), do: scrivener_config(String.to_integer(page))
-  defp scrivener_config(page), do: %Scrivener.Config{page_number: page, page_size: default_page_size()}
 
-  defp default_page_size, do: 50
+  defp table({_header, []}, _page),
+    do: []
 
-  defp row_index(page, index) when is_bitstring(page), do: row_index(String.to_integer(page), index)
-  defp row_index(page, index), do: (page - 1) * default_page_size() + index + 1
+  defp table({header, entries}, page),
+    do: content_tag(:table, content({header, entries}, page), [class: "csv-editor"])
+
+
+  defp pager(pages),
+    do: pagination_links(pages, next: nil, previous: nil, first: true, last: true, view_style: :foundation)
+
+  defp pager(_pages, 0),
+    do: []
+
+  defp pager(_pages, 1),
+    do: []
+
+  defp pager(pages, _),
+    do: pager(pages)
+
+
+  defp content({[], []}, _page),
+    do: []
+
+  defp content({[], body}, page),
+    do: [body(body, page)]
+
+  defp content({header, []}, _page),
+    do: [header(header)]
+
+  defp content({header, body}, page),
+    do: [header(header), body(body, page)]
+
+
+  defp header(header),
+    do: content_tag(:thead, content_tag(:tr, [cell("", :th), Enum.map(header, fn(e) -> cell(e, :th) end)]))
+
+
+  defp body(body, page),
+    do: content_tag(:tbody, row(body, :td, page))
+
+
+  defp row(contents, tag, page),
+    do: Enum.with_index(contents) |> Enum.map(fn{c, index} -> row(c, tag, index, page) end)
+
+  defp row(c, tag, index, page) when is_list(c),
+    do: content_tag(:tr, [cell(row_index(page, index), :th), Enum.map(c, fn(e) -> cell(e, tag) end)])
+
+  defp row(c, tag, _index, _page),
+    do: cell(c, tag)
+
+
+  defp cell(c, tag),
+    do: content_tag(tag, c)
+
+
+  defp scrivener_config(page) when is_bitstring(page),
+    do: scrivener_config(String.to_integer(page))
+
+  defp scrivener_config(page),
+    do: %Scrivener.Config{page_number: page, page_size: default_page_size()}
+
+
+  defp default_page_size,
+    do: 50
+
+
+  defp row_index(page, index) when is_bitstring(page),
+    do: row_index(String.to_integer(page), index)
+
+  defp row_index(page, index),
+    do: (page - 1) * default_page_size() + index + 1
+
 end
