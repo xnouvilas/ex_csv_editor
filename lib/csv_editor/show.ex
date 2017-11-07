@@ -115,7 +115,7 @@ defmodule CsvEditor.Show do
     do: Enum.with_index(contents) |> Enum.map(fn{c, index} -> row(c, tag, index, params) end)
 
   defp row(c, tag, index, params) when is_list(c),
-    do: content_tag(:tr, [cell(row_index(params["page"], index), :th), Enum.map(c, fn(e) -> cell(e, tag) end)])
+    do: content_tag(:tr, [cell(row_index(params, index), :th), Enum.map(c, fn(e) -> cell(e, tag) end)])
 
   defp row(c, tag, _index, _page),
     do: cell(c, tag)
@@ -171,13 +171,16 @@ defmodule CsvEditor.Show do
     do: %{"page" => 1}
 
 
-  defp row_index(nil, index),
-    do: row_index(1, index)
+  defp row_index(params, {nil, page_size, index}),
+    do: row_index(params, {1, page_size, index})
 
-  defp row_index(page, index) when is_bitstring(page),
-    do: row_index(String.to_integer(page), index)
+  defp row_index(params, {page, "all", index}),
+    do: index + 1
 
-  defp row_index(page, index),
-    do: (page - 1) * set_page_size(nil) + index + 1
+  defp row_index(params, {page, page_size, index}),
+    do: (page - 1) * set_page_size(params["page_size"]) + index + 1
+
+  defp row_index(params, index),
+    do: row_index(params, {params["page"] |> to_string |> String.to_integer, params["page_size"], index})
 
 end
