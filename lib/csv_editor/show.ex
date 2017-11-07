@@ -128,16 +128,10 @@ defmodule CsvEditor.Show do
   defp scrivener_config(params),
     do: scrivener_config(params, {set_start_page(params["page"]), set_page_size(params["page_size"])})
 
-  defp scrivener_config(_params, {page, "all"}),
-    do: %Scrivener.Config{
-      page_number: page |> to_string |> String.to_integer,
-      page_size: 10_000_000
-    }
-
   defp scrivener_config(_params, {page, page_size}),
     do: %Scrivener.Config{
-      page_number: page |> to_string |> String.to_integer,
-      page_size: page_size |> to_string |> String.to_integer
+      page_number: page,
+      page_size: page_size
     }
 
 
@@ -151,7 +145,7 @@ defmodule CsvEditor.Show do
     do: set_start_page()
 
   defp set_start_page(page),
-    do: page
+    do: page |> to_string |> String.to_integer
 
 
   defp set_page_size,
@@ -163,8 +157,11 @@ defmodule CsvEditor.Show do
   defp set_page_size(nil),
     do: set_page_size()
 
+  defp set_page_size("all"),
+    do: 10_000_000
+
   defp set_page_size(page_size),
-    do: page_size
+    do: page_size |> to_string |> String.to_integer
 
 
   defp default_page,
@@ -174,13 +171,13 @@ defmodule CsvEditor.Show do
   defp row_index(params, {nil, page_size, index}),
     do: row_index(params, {1, page_size, index})
 
-  defp row_index(params, {page, "all", index}),
+  defp row_index(_params, {_page, "all", index}),
     do: index + 1
 
-  defp row_index(params, {page, page_size, index}),
-    do: (page - 1) * set_page_size(params["page_size"]) + index + 1
+  defp row_index(_params, {page, page_size, index}),
+    do: (set_start_page(page) - 1) * set_page_size(page_size) + index + 1
 
   defp row_index(params, index),
-    do: row_index(params, {params["page"] |> to_string |> String.to_integer, params["page_size"], index})
+    do: row_index(params, {params["page"], params["page_size"], index})
 
 end
