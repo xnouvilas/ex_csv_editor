@@ -11,7 +11,7 @@ Add to `mix.exs`
   defp deps do
     [
       # ...
-      {:csv_editor, "~> 0.3"}
+      {:csv_editor, "~> 0.4"}
       # ...
     ]
   end

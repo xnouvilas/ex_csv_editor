@@ -37,41 +37,41 @@ defmodule CsvEditor.Show do
   import Scrivener.HTML
 
   def data(file) when is_bitstring(file),
-    do: data(file, 1)
+    do: data(file, default_page())
 
   def data({body}),
-    do: data({[], body}, 1)
+    do: data({[], body}, default_page())
 
   def data({header, body}),
-    do: data({header, body}, 1)
+    do: data({header, body}, default_page())
 
   def data({header, body}, nil),
-    do: data({header, body}, 1)
+    do: data({header, body}, default_page())
 
-  def data(file, page) when is_bitstring(file),
-    do: CsvEditor.decode(file) |> data(page)
+  def data(file, params) when is_bitstring(file),
+    do: CsvEditor.decode(file) |> data(params)
 
   def data({body}, nil),
-    do: data({[], body}, 1)
+    do: data({[], body}, default_page())
 
-  def data({body}, page),
-    do: data({[], body}, page)
+  def data({body}, params),
+    do: data({[], body}, params)
 
   def data({header, body}, nil),
-    do: data({header, body}, 1)
+    do: data({header, body}, default_page())
 
-  def data({header, body}, page),
-    do: data({header, body}, page, Scrivener.paginate(body, scrivener_config(page)))
+  def data({header, body}, params),
+    do: data({header, body}, params, Scrivener.paginate(body, scrivener_config(params)))
 
-  def data({header, _body}, page, pages),
-    do: [table({header, pages.entries}, page), pager(pages, pages.total_pages)]
+  def data({header, _body}, params, pages),
+    do: [table({header, pages.entries}, params), pager(pages, pages.total_pages)]
 
 
-  defp table({_header, []}, _page),
+  defp table({_header, []}, _params),
     do: []
 
-  defp table({header, entries}, page),
-    do: content_tag(:table, content({header, entries}, page), [class: "csv-editor"])
+  defp table({header, entries}, params),
+    do: content_tag(:table, content({header, entries}, params), [class: "csv-editor"])
 
 
   defp pager(pages),
@@ -90,29 +90,29 @@ defmodule CsvEditor.Show do
   defp content({[], []}, _page),
     do: []
 
-  defp content({[], body}, page),
-    do: [body(body, page)]
+  defp content({[], body}, params),
+    do: [body(body, params)]
 
-  defp content({header, []}, _page),
+  defp content({header, []}, _params),
     do: [header(header)]
 
-  defp content({header, body}, page),
-    do: [header(header), body(body, page)]
+  defp content({header, body}, params),
+    do: [header(header), body(body, params)]
 
 
   defp header(header),
     do: content_tag(:thead, content_tag(:tr, [cell("", :th), Enum.map(header, fn(e) -> cell(e, :th) end)]))
 
 
-  defp body(body, page),
-    do: content_tag(:tbody, row(body, :td, page))
+  defp body(body, params),
+    do: content_tag(:tbody, row(body, :td, params))
 
 
-  defp row(contents, tag, page),
-    do: Enum.with_index(contents) |> Enum.map(fn{c, index} -> row(c, tag, index, page) end)
+  defp row(contents, tag, params),
+    do: Enum.with_index(contents) |> Enum.map(fn{c, index} -> row(c, tag, index, params) end)
 
-  defp row(c, tag, index, page) when is_list(c),
-    do: content_tag(:tr, [cell(row_index(page, index), :th), Enum.map(c, fn(e) -> cell(e, tag) end)])
+  defp row(c, tag, index, params) when is_list(c),
+    do: content_tag(:tr, [cell(row_index(params["page"], index), :th), Enum.map(c, fn(e) -> cell(e, tag) end)])
 
   defp row(c, tag, _index, _page),
     do: cell(c, tag)
@@ -122,16 +122,36 @@ defmodule CsvEditor.Show do
     do: content_tag(tag, c)
 
 
-  defp scrivener_config(page) when is_bitstring(page),
-    do: scrivener_config(String.to_integer(page))
+  defp scrivener_config(params),
+    do: scrivener_config(params, {params["page"], params["page_size"]})
 
-  defp scrivener_config(page),
-    do: %Scrivener.Config{page_number: page, page_size: default_page_size()}
+  defp scrivener_config(params, {nil, nil}),
+    do: scrivener_config(params, {default_start_page(), default_page_size()})
+
+  defp scrivener_config(params, {nil, page_size}),
+    do: scrivener_config(params, {default_start_page(), page_size})
+
+  defp scrivener_config(params, {page, nil}),
+    do: scrivener_config(params, {page |> to_string |> String.to_integer, default_page_size()})
+
+  defp scrivener_config(_params, {page, page_size}),
+    do: %Scrivener.Config{page_number: page, page_size: page_size}
+
+
+  defp default_start_page,
+    do: 1
 
 
   defp default_page_size,
     do: 50
 
+
+  defp default_page,
+    do: %{"page" => 1}
+
+
+  defp row_index(nil, index),
+    do: row_index(1, index)
 
   defp row_index(page, index) when is_bitstring(page),
     do: row_index(String.to_integer(page), index)
