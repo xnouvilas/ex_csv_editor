@@ -137,6 +137,12 @@ defmodule CsvEditor.Show do
   defp scrivener_config(params, {page, nil}),
     do: scrivener_config(params, {page, default_page_size()})
 
+  defp scrivener_config(_params, {page, "all"}),
+    do: %Scrivener.Config{
+      page_number: page |> to_string |> String.to_integer,
+      page_size: 10_000_000
+    }
+
   defp scrivener_config(_params, {page, page_size}),
     do: %Scrivener.Config{
       page_number: page |> to_string |> String.to_integer,
