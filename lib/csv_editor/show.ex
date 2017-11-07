@@ -64,7 +64,7 @@ defmodule CsvEditor.Show do
     do: data({header, body}, params, Scrivener.paginate(body, scrivener_config(params)))
 
   def data({header, _body}, params, pages),
-    do: [table({header, pages.entries}, params), pager(pages, pages.total_pages)]
+    do: [table({header, pages.entries}, params), pager(pages, params, pages.total_pages)]
 
 
   defp table({_header, []}, _params),
@@ -74,17 +74,20 @@ defmodule CsvEditor.Show do
     do: content_tag(:table, content({header, entries}, params), [class: "csv-editor"])
 
 
-  defp pager(pages),
+  defp pager(pages, nil),
     do: pagination_links(pages, next: nil, previous: nil, first: true, last: true, view_style: :foundation)
 
-  defp pager(_pages, 0),
+  defp pager(pages, page_size),
+    do: pagination_links(pages, page_size: page_size, next: nil, previous: nil, first: true, last: true, view_style: :foundation)
+
+  defp pager(_pages, _params, 0),
     do: []
 
-  defp pager(_pages, 1),
+  defp pager(_pages, _params, 1),
     do: []
 
-  defp pager(pages, _),
-    do: pager(pages)
+  defp pager(pages, params, _),
+    do: pager(pages, params["page_size"])
 
 
   defp content({[], []}, _page),
