@@ -126,7 +126,7 @@ defmodule CsvEditor.Show do
 
 
   defp scrivener_config(params),
-    do: scrivener_config(params, {default_start_page(params["page"]), default_page_size(params["page_size"])})
+    do: scrivener_config(params, {set_start_page(params["page"]), set_page_size(params["page_size"])})
 
   defp scrivener_config(_params, {page, "all"}),
     do: %Scrivener.Config{
@@ -141,29 +141,29 @@ defmodule CsvEditor.Show do
     }
 
 
-  defp default_start_page,
+  defp set_start_page,
     do: 1
 
-  defp default_start_page(""),
-    do: default_start_page()
+  defp set_start_page(""),
+    do: set_start_page()
 
-  defp default_start_page(nil),
-    do: default_start_page()
+  defp set_start_page(nil),
+    do: set_start_page()
 
-  defp default_start_page(page),
+  defp set_start_page(page),
     do: page
 
 
-  defp default_page_size,
+  defp set_page_size,
     do: 50
 
-  defp default_page_size(""),
-    do: default_page_size()
+  defp set_page_size(""),
+    do: set_page_size()
 
-  defp default_page_size(nil),
-    do: default_page_size()
+  defp set_page_size(nil),
+    do: set_page_size()
 
-  defp default_page_size(page_size),
+  defp set_page_size(page_size),
     do: page_size
 
 
@@ -178,6 +178,6 @@ defmodule CsvEditor.Show do
     do: row_index(String.to_integer(page), index)
 
   defp row_index(page, index),
-    do: (page - 1) * default_page_size(nil) + index + 1
+    do: (page - 1) * set_page_size(nil) + index + 1
 
 end
