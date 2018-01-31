@@ -4,8 +4,8 @@ defmodule CsvEditor.Mixfile do
   def project do
     [
       app: :csv_editor,
-      version: "0.4.0",
-      elixir: "~> 1.4",
+      version: "0.5.0",
+      elixir: "~> 1.5.2",
       build_embedded: Mix.env == :prod,
       start_permanent: Mix.env == :prod,
       description: description(),
