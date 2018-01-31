@@ -213,4 +213,23 @@ defmodule CsvEditor.ShowTest do
 
   end
 
+  test "spawn log file" do
+
+    expected = [60, "table", [[32, "class", 61, 34, "csv-editor", 34]], 62,
+      [[60, "tbody", [], 62,
+        [[60, "tr", [], 62,
+          [[60, "th", [], 62, "1", 60, 47, "th", 62],
+          [[60, "td", [], 62, "first line", 60, 47, "td", 62]]], 60, 47, "tr", 62],
+        [60, "tr", [], 62,
+          [[60, "th", [], 62, "2", 60, 47, "th", 62],
+          [[60, "td", [], 62, "second line", 60, 47, "td", 62]]], 60, 47, "tr", 62]],
+        60, 47, "tbody", 62]],
+      60, 47, "table", 62]
+
+    [{:safe, content}, []] = CsvEditor.Show.data("test/assets/text.log", %{}, :txt)
+
+    assert expected == content
+
+  end
+
 end

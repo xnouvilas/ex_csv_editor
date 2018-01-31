@@ -66,6 +66,9 @@ defmodule CsvEditor.Show do
   def data({header, _body}, params, pages),
     do: [table({header, pages.entries}, params), pager(pages, params, pages.total_pages)]
 
+  def data(file, params, :txt) when is_bitstring(file),
+    do: {CsvEditor.decode_stream(file, ?\n)} |> data(params)
+
 
   defp table({_header, []}, _params),
     do: []
